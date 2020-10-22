@@ -10,7 +10,7 @@ def main():
 	# Hyper-parameters:
 
 	batch_size = 32 # in each iteration, we consider 32 training examples at once
-	num_epochs = 1 # we iterate 200 times over the entire training set
+	num_epochs = 10 # we iterate 200 times over the entire training set
 	kernel_size = 3 # we will use 3x3 kernels throughout
 	pool_size = 2 # we will use 2x2 pooling throughout
 	conv_depth_1 = 32 # we will initially have 32 kernels per conv. layer...
@@ -26,22 +26,14 @@ def main():
 		(kernel_size, kernel_size), padding='same', 
 		activation='relu')(inp)
 
-	conv_2 = Convolution2D(conv_depth_1, 
-		(kernel_size, kernel_size), padding='same', 
-		activation='relu')(conv_1)
-
-	pool_1 = MaxPooling2D(pool_size=(pool_size, pool_size))(conv_2)
+	pool_1 = MaxPooling2D(pool_size=(pool_size, pool_size))(conv_1)
 
 	drop_1 = Dropout(drop_prob_1)(pool_1)
 
 	# Conv [64] -> Conv [64] -> Pool (with dropout on the pooling layer)
-	conv_3 = Convolution2D(conv_depth_2, 
+	conv_2 = Convolution2D(conv_depth_1, 
 		(kernel_size, kernel_size), padding='same', 
-		activation='relu')(drop_1)
-
-	conv_4 = Convolution2D(conv_depth_2, 
-		(kernel_size, kernel_size), padding='same', 
-		activation='relu')(conv_3)
+		activation='relu')(conv_1)
 
 	pool_2 = MaxPooling2D(pool_size=(pool_size, pool_size))(conv_4)
 
